@@ -18,14 +18,67 @@ function is_vip_com() {
 }
 
 /**
- * Determine if Gutenberg is being used
+ * Determine if Gutenberg is being used.
+ *
+ * There are several possible variations that need to be accounted for:
+ *
+ *  - WordPress 4.9, Gutenberg plugin is not active.
+ *  - WordPress 4.9, Gutenberg plugin is active.
+ *  - WordPress 5.0, block editor by default.
+ *  - WordPress 5.0, Classic editor plugin active, using classic editor.
+ *  - WordPress 5.0, Classic editor plugin active, using the block editor.
  *
  * @since  1.2
+ *
+ * @param object $post The post object.
  * @return boolean
  */
-function is_using_gutenberg() {
-	return ( function_exists( 'the_gutenberg_project' ) );
+function is_using_gutenberg( $post ) {
+	global $wp_version;
+	$gutenberg_available = function_exists( 'the_gutenberg_project' );
+	$version_5_plus      = version_compare( $wp_version, '5', '>=' );
+
+	if ( ! $gutenberg_available && ! $version_5_plus ) {
+		return false;
+	}
+
+	// We have to use the function here instead of the filter due to differences in the way certain plugins implement this.
+	if ( ! function_exists( 'use_block_editor_for_post' ) ) {
+		include_once ABSPATH . 'wp-admin/includes/post.php';
+	}
+
+	// Previous to Gutenberg 5.0, `use_block_editor_for_post` was named `gutenberg_can_edit_post`.
+	if ( ! function_exists( 'use_block_editor_for_post' ) ) {
+		if ( function_exists( 'gutenberg_can_edit_post' ) ) {
+			return gutenberg_can_edit_post( $post );
+		}
+		return false;
+	}
+
+	/**
+	 * WordPress 5.0 will do a check_admin_referrer() inside the use_block_editor_for_posts(),
+	 * and this call would fail, returns a 404 if there's custom meta box, and kills the request.
+	 *
+	 * Unsetting the 'meta-box-loader' in the global request would bypass that check.
+	 */
+	if ( isset( $_GET['meta-box-loader'] ) ) {
+		$meta_box_loader = $_GET['meta-box-loader'];
+		unset( $_GET['meta-box-loader'] );
+	}
+
+	$use_block_editor = use_block_editor_for_post( $post );
+
+	/**
+	 * Set the $meta_box_loader back to the request, if it exists
+	 * so other areas that rely on it would still work.
+	 */
+	if ( isset( $meta_box_loader ) ) {
+		$_GET['meta-box-loader'] = $meta_box_loader;
+	}
+
+	return $use_block_editor;
 }
+
 
 /**
  * Get Distributor settings with defaults
@@ -122,37 +175,44 @@ function set_meta( $post_id, $meta ) {
 	$blacklisted_meta = blacklisted_meta();
 
 	foreach ( $meta as $meta_key => $meta_values ) {
-		foreach ( $meta_values as $meta_placement => $meta_value ) {
+		if ( in_array( $meta_key, $blacklisted_meta, true ) ) {
+			continue;
+		}
+
+		foreach ( (array) $meta_values as $meta_placement => $meta_value ) {
+			$has_prev_value = isset( $existing_meta[ $meta_key ] )
+								&& is_array( $existing_meta[ $meta_key ] )
+								&& array_key_exists( $meta_placement, $existing_meta[ $meta_key ] )
+								? true : false;
+			if ( $has_prev_value ) {
+				$prev_value = maybe_unserialize( $existing_meta[ $meta_key ][ $meta_placement ] );
+			}
+
 			if ( ! is_array( $meta_value ) ) {
-				if ( ! in_array( $meta_key, $blacklisted_meta, true ) ) {
-					$meta_value = maybe_unserialize( $meta_value );
-					$prev_value = isset( $existing_meta[ $meta_key ][ $meta_placement ] ) ? $existing_meta[ $meta_key ][ $meta_placement ] : '';
+				$meta_value = maybe_unserialize( $meta_value );
+			}
 
-					if ( '' !== $prev_value ) {
-						update_post_meta( $post_id, $meta_key, $meta_value, $prev_value );
-					} else {
-						add_post_meta( $post_id, $meta_key, $meta_value );
-					}
-				}
+			if ( $has_prev_value ) {
+				update_post_meta( $post_id, $meta_key, $meta_value, $prev_value );
 			} else {
-				$meta_array = (array) $meta_value;
-				$new_values = array();
-				$prev_value = isset( $existing_meta[ $meta_key ][ $meta_placement ] ) ? $existing_meta[ $meta_key ][ $meta_placement ] : '';
-
-				foreach ( $meta_array as $meta_item_key => $meta_item_value ) {
-					if ( ! in_array( $meta_key, $blacklisted_meta, true ) ) {
-						$new_values[ $meta_item_key ] = maybe_unserialize( $meta_item_value );
-					}
-				}
-
-				if ( '' !== $prev_value ) {
-					update_post_meta( $post_id, $meta_key, $meta_value, $prev_value );
-				} else {
-					add_post_meta( $post_id, $meta_key, $meta_value );
-				}
+				add_post_meta( $post_id, $meta_key, $meta_value );
 			}
 		}
 	}
+
+	/**
+	 * Fires after Distributor sets post meta.
+	 *
+	 * Note: All sent meta is included in the `$meta` array, including blacklisted keys.
+	 * Take care to continue to filter out blacklisted keys in any further meta setting.
+	 *
+	 * @param array $meta          All received meta for the post
+	 * @param array $existing_meta Existing meta for the post
+	 * @param int   $post_id       Post ID
+	 *
+	 * @since 1.3.8
+	 */
+	do_action( 'dt_after_set_meta', $meta, $existing_meta, $post_id );
 }
 
 /**
@@ -185,7 +245,20 @@ function available_pull_post_types( $connection, $type ) {
 		}
 	}
 
-	return $post_types;
+	/**
+	 * Filter the post types that should be available for pull.
+	 *
+	 * Helpful for sites that want to pull custom post type content from another site into a different existing post type on the receiving end.
+	 *
+	 * @since 1.3.5
+	 *
+	 * @param array                   $post_types        Post types available for pull with name and slug
+	 * @param array                   $remote_post_types Post types available from the remote connection
+	 * @param array                   $local_post_types  Post types registered as public on the local site
+	 * @param \Distributor\Connection $connection        Distributor connection object
+	 * @param string                  $type              Distributor connection type
+	 */
+	return apply_filters( 'dt_available_pull_post_types', $post_types, $remote_post_types, $local_post_types, $connection, $type );
 }
 
 /**
@@ -472,7 +545,7 @@ function set_media( $post_id, $media ) {
 		$featured_keys = wp_list_pluck( $media, 'featured' );
 
 		// Note: this is not a strict search because of issues with typecasting in some setups
-		$featured_key  = array_search( true, $featured_keys );
+		$featured_key = array_search( true, $featured_keys ); // @codingStandardsIgnoreLine Ignore strict search requirement.
 
 		$media = ( false !== $featured_key ) ? array( $media[ $featured_key ] ) : array();
 	}
@@ -516,7 +589,9 @@ function set_media( $post_id, $media ) {
 		}
 
 		// Transfer all meta
-		set_meta( $image_id, $media_item['meta'] );
+		if ( isset( $media_item['meta'] ) ) {
+			set_meta( $image_id, $media_item['meta'] );
+		}
 
 		// Transfer post properties
 		wp_update_post(
@@ -537,7 +612,7 @@ function set_media( $post_id, $media ) {
 /**
  * This is a helper function for transporting/formatting data about a media post
  *
- * @param  WP_Post $media_post Media post.
+ * @param  \WP_Post $media_post Media post.
  * @since  1.0
  * @return array
  */
@@ -555,7 +630,7 @@ function format_media_post( $media_post ) {
 
 	$media_item['description'] = array(
 		'raw'      => $media_post->post_content,
-		'rendered' => apply_filters( 'the_content', $media_post->post_content ),
+		'rendered' => get_processed_content( $media_post->post_content ),
 	);
 
 	$media_item['caption'] = array(
@@ -568,7 +643,7 @@ function format_media_post( $media_post ) {
 	$media_item['media_details'] = apply_filters( 'dt_get_media_details', wp_get_attachment_metadata( $media_post->ID ), $media_post->ID );
 	$media_item['post']          = $media_post->post_parent;
 	$media_item['source_url']    = wp_get_attachment_url( $media_post->ID );
-	$media_item['meta']          = get_post_meta( $media_post->ID );
+	$media_item['meta']          = \Distributor\Utils\prepare_meta( $media_post->ID );
 
 	return apply_filters( 'dt_media_item_formatted', $media_item, $media_post->ID );
 }
@@ -582,30 +657,132 @@ function format_media_post( $media_post ) {
  * @return int|bool
  */
 function process_media( $url, $post_id ) {
-	preg_match( '/[^\?]+\.(jpe?g|jpe|gif|png)\b/i', $url, $matches );
+
+	/**
+	 * Filter allowed media extensions to be processed
+	 *
+	 * @since 1.3.7
+	 *
+	 * @param array $allowed_extensions Allowed extensions array.
+	 * @param string $url Media url.
+	 * @param int $post_id Post ID.
+	 */
+	$allowed_extensions = apply_filters( 'dt_allowed_media_extensions', array( 'jpg', 'jpeg', 'jpe', 'gif', 'png' ), $url, $post_id );
+	preg_match( '/[^\?]+\.(' . implode( '|', $allowed_extensions ) . ')\b/i', $url, $matches );
 	if ( ! $matches ) {
+		$media_name = null;
+	} else {
+		$media_name = basename( $matches[0] );
+	}
+
+	/**
+	 * Filter name of the processing media.
+	 *
+	 * @since 1.3.7
+	 *
+	 * @param string $media_name  Name of the processing media.
+	 * @param string $url Media url.
+	 * @param int $post_id Post ID.
+	 */
+	$media_name = apply_filters( 'dt_media_processing_filename', $media_name, $url, $post_id );
+
+	if ( is_null( $media_name ) ) {
 		return false;
 	}
+
+	$file_array         = array();
+	$file_array['name'] = $media_name;
 
 	require_once ABSPATH . 'wp-admin/includes/image.php';
 	require_once ABSPATH . 'wp-admin/includes/file.php';
 	require_once ABSPATH . 'wp-admin/includes/media.php';
 
-	$file_array         = array();
-	$file_array['name'] = basename( $matches[0] );
+	// Allows to pull media from local IP addresses
+	// Uses a "magic number" for priority so we only unhook our call, just in case
+	add_filter( 'http_request_host_is_external', '__return_true', 88 );
 
 	// Download file to temp location.
 	$file_array['tmp_name'] = download_url( $url );
 
+	remove_filter( 'http_request_host_is_external', '__return_true', 88 );
+
 	// If error storing temporarily, return the error.
 	if ( is_wp_error( $file_array['tmp_name'] ) ) {
+
+		// Distributor is in debug mode, display the issue, could be storage related.
+		if ( is_dt_debug() ) {
+			error_log( sprintf( 'Distributor: %s', $file_array['tmp_name']->get_error_message() ) ); // @codingStandardsIgnoreLine
+		}
+
 		return false;
 	}
 
 	// Do the validation and storage stuff.
 	$result = media_handle_sideload( $file_array, $post_id );
 	if ( is_wp_error( $result ) ) {
+
+		// Distributor is in debug mode, display the issue, could be storage related.
+		if ( is_dt_debug() ) {
+			error_log( sprintf( 'Distributor: %s', $file_array['tmp_name']->get_error_message() ) ); // @codingStandardsIgnoreLine
+		}
+
 		return false;
 	}
 	return (int) $result;
+}
+
+/**
+ * Return whether a post type is compatible with the block editor.
+ *
+ * The block editor depends on the REST API, and if the post type is not shown in the
+ * REST API, then it won't work with the block editor.
+ *
+ * @source WordPress 5.0.0
+ *
+ * @param string $post_type The post type.
+ * @return bool Whether the post type can be edited with the block editor.
+ */
+function dt_use_block_editor_for_post_type( $post_type ) {
+	if ( ! post_type_exists( $post_type ) ) {
+		return false;
+	}
+
+	if ( ! post_type_supports( $post_type, 'editor' ) ) {
+		return false;
+	}
+
+	$post_type_object = get_post_type_object( $post_type );
+	if ( $post_type_object && ! $post_type_object->show_in_rest ) {
+		return false;
+	}
+
+	/**
+	 * Filter whether a post is able to be edited in the block editor.
+	 *
+	 * @since 5.0.0
+	 *
+	 * @param bool   $use_block_editor  Whether the post type can be edited or not. Default true.
+	 * @param string $post_type         The post type being checked.
+	 */
+	return apply_filters( 'use_block_editor_for_post_type', true, $post_type );
+}
+
+/**
+ * Helper function to process post content.
+ *
+ * @param string $post_content The post content.
+ *
+ * @return string $post_content The processed post content.
+ */
+function get_processed_content( $post_content ) {
+
+	global $wp_embed;
+	/**
+	 * Remove autoembed filter so that actual URL will be pushed and not the generated markup.
+	 */
+	remove_filter( 'the_content', [ $wp_embed, 'autoembed' ], 8 );
+	$post_content = apply_filters( 'the_content', $post_content );
+	add_filter( 'the_content', [ $wp_embed, 'autoembed' ], 8 );
+
+	return $post_content;
 }

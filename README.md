@@ -59,6 +59,8 @@ __External Connection Post Type Support__ - When _pulling_ content from an exter
 
 In addition, in order for distribution to work with external connections that have custom post type content, that post type needs to be registered with the argument `show_in_rest => true` on the external site.
 
+__Backwards Compatibility__ - While we strive to be mindful of backwards compatibility much the same way WordPress itself is, we do not currently guarantee continued interoperability between different versions of Distributor. We assume the current userbase for this plugin has a high degree of control over any site that has been set up as an external connection and urge you to keep Distributor up to date.
+
 ## Developers
 
 ### Testing
@@ -68,6 +70,8 @@ The plugin contains a standard test suite compatible with PHPUnit. If you want t
 ### Debugging
 
 You can define a constant `DISTRIBUTOR_DEBUG` to `true` to increase the ease of debugging in Distributor. This will make all remote requests blocking and expose the subscription post type.
+
+Enabling this will also provide more debugging information in your error log for image side loading issues. The specific logging method may change in the future.
 
 ### Work with us
 
