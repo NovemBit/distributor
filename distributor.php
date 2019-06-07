@@ -8,7 +8,7 @@
  * License:           GPLv2 or later
  * Text Domain:       distributor
  * Domain Path:       /lang/
- * GitHub Plugin URI: https://github.com/10up/distributor
+ * GitHub Plugin URI: https://github.com/NovemBit/distributor
  *
  * @package distributor
  */
@@ -126,7 +126,7 @@ if ( class_exists( 'Puc_v4_Factory' ) ) {
 	if ( $valid_license ) {
 		// @codingStandardsIgnoreStart
 		$updateChecker = Puc_v4_Factory::buildUpdateChecker(
-			'https://github.com/10up/distributor/',
+			'https://github.com/NovemBit/distributor/',
 			__FILE__,
 			'distributor'
 		);
