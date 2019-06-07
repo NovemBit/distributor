@@ -2,9 +2,9 @@
 # This file is distributed under the GPLv2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Distributor 1.4.1\n"
+"Project-Id-Version: Distributor 1.4.2-dev\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/distributor\n"
-"POT-Creation-Date: 2019-03-15 18:33:38+00:00\n"
+"POT-Creation-Date: 2019-06-07 13:00:31+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -443,121 +443,121 @@ msgstr ""
 msgid "External Connection URL"
 msgstr ""
 
-#: includes/external-connection-cpt.php:483
+#: includes/external-connection-cpt.php:492
 msgid "Roles Allowed to Push"
 msgstr ""
 
-#: includes/external-connection-cpt.php:496
+#: includes/external-connection-cpt.php:505
 msgid ""
 "Select the roles of users on this site that will be allowed to push content "
 "to this connection. Keep in mind that pushing will use the permissions of "
 "the user credentials provided for this connection."
 msgstr ""
 
-#: includes/external-connection-cpt.php:505
+#: includes/external-connection-cpt.php:514
 msgid "Update Connection"
 msgstr ""
 
-#: includes/external-connection-cpt.php:507
+#: includes/external-connection-cpt.php:516
 msgid "Move to Trash"
 msgstr ""
 
-#: includes/external-connection-cpt.php:509
+#: includes/external-connection-cpt.php:518
 msgid "Create Connection"
 msgstr ""
 
-#: includes/external-connection-cpt.php:529
-#: includes/external-connection-cpt.php:598
-#: includes/external-connection-cpt.php:599
-#: includes/external-connection-cpt.php:620 includes/pull-ui.php:368
+#: includes/external-connection-cpt.php:538
+#: includes/external-connection-cpt.php:607
+#: includes/external-connection-cpt.php:608
+#: includes/external-connection-cpt.php:629 includes/pull-ui.php:368
 msgid "External Connections"
 msgstr ""
 
-#: includes/external-connection-cpt.php:529
-#: includes/external-connection-cpt.php:622
+#: includes/external-connection-cpt.php:538
+#: includes/external-connection-cpt.php:631
 msgid "Add New"
 msgstr ""
 
-#: includes/external-connection-cpt.php:555
+#: includes/external-connection-cpt.php:564
 msgid "External connections per page: "
 msgstr ""
 
-#: includes/external-connection-cpt.php:621
+#: includes/external-connection-cpt.php:630
 msgid "External Connection"
 msgstr ""
 
-#: includes/external-connection-cpt.php:623
+#: includes/external-connection-cpt.php:632
 msgid "Add New External Connection"
 msgstr ""
 
-#: includes/external-connection-cpt.php:624
+#: includes/external-connection-cpt.php:633
 msgid "Edit External Connection"
 msgstr ""
 
-#: includes/external-connection-cpt.php:625
+#: includes/external-connection-cpt.php:634
 msgid "New External Connection"
 msgstr ""
 
-#: includes/external-connection-cpt.php:626
+#: includes/external-connection-cpt.php:635
 msgid "All External Connections"
 msgstr ""
 
-#: includes/external-connection-cpt.php:627
+#: includes/external-connection-cpt.php:636
 msgid "View External Connection"
 msgstr ""
 
-#: includes/external-connection-cpt.php:628
+#: includes/external-connection-cpt.php:637
 msgid "Search External Connections"
 msgstr ""
 
-#: includes/external-connection-cpt.php:629
+#: includes/external-connection-cpt.php:638
 msgid "No external connections found."
 msgstr ""
 
-#: includes/external-connection-cpt.php:630
+#: includes/external-connection-cpt.php:639
 msgid "No external connections found in trash."
 msgstr ""
 
-#: includes/external-connection-cpt.php:664
-#: includes/external-connection-cpt.php:667
+#: includes/external-connection-cpt.php:680
+#: includes/external-connection-cpt.php:683
 msgid "External connection updated."
 msgstr ""
 
-#: includes/external-connection-cpt.php:665
+#: includes/external-connection-cpt.php:681
 msgid "Custom field updated."
 msgstr ""
 
-#: includes/external-connection-cpt.php:666
+#: includes/external-connection-cpt.php:682
 msgid "Custom field deleted."
 msgstr ""
 
-#: includes/external-connection-cpt.php:669
+#: includes/external-connection-cpt.php:685
 #. translators: %s: revision title
 msgid " External connection restored to revision from %s"
 msgstr ""
 
-#: includes/external-connection-cpt.php:670
+#: includes/external-connection-cpt.php:686
 msgid "External connection created."
 msgstr ""
 
-#: includes/external-connection-cpt.php:671
+#: includes/external-connection-cpt.php:687
 msgid "External connection saved."
 msgstr ""
 
-#: includes/external-connection-cpt.php:672
+#: includes/external-connection-cpt.php:688
 msgid "External connection submitted."
 msgstr ""
 
-#: includes/external-connection-cpt.php:675
+#: includes/external-connection-cpt.php:691
 #. translators: %s: a date and time
 msgid "External connection scheduled for: <strong>%1$s</strong>."
 msgstr ""
 
-#: includes/external-connection-cpt.php:676
+#: includes/external-connection-cpt.php:692
 msgid "M j, Y @ G:i"
 msgstr ""
 
-#: includes/external-connection-cpt.php:678
+#: includes/external-connection-cpt.php:694
 msgid "External connection draft updated."
 msgstr ""
 
@@ -659,7 +659,7 @@ msgstr ""
 msgid "There was an issue distributing the post."
 msgstr ""
 
-#: includes/push-ui.php:516
+#: includes/push-ui.php:525
 msgid "No connections available for distribution."
 msgstr ""
 
@@ -832,15 +832,6 @@ msgstr ""
 
 #: includes/template-tags.php:231
 msgid "Distributed from"
-msgstr ""
-
-#: vendor/10up/wp_mock/tests/FunctionMocksTest.php:65
-msgid "Test"
-msgstr ""
-
-#: vendor/10up/wp_mock/tests/FunctionMocksTest.php:75
-#: vendor/10up/wp_mock/tests/FunctionMocksTest.php:77
-msgid "Input"
 msgstr ""
 
 #: vendor/yahnis-elsts/plugin-update-checker/Puc/v4p5/Plugin/Ui.php:54

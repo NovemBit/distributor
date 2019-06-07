@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file, per [the Keep a Changelog standard](http://keepachangelog.com/).
 
+## [ 1.4.2 ] - 2019-06-19
+### Added
+* Apply hook in the 'meta_box_external_connection_details(..)' function
+* Make 'menu content' extendable
+* Add hook to modify connection cpt arguments
+
 ## [ 1.4.1 ] - 2019-03-15
 ### Fixed
 * Improve block editor detection, correcting an issue with post saving.
