@@ -111,15 +111,9 @@ function ajax_push() {
 		}
 	}
 
-	$result = push( $params );
 
 	wp_send_json_success(
-		array(
-			'results' => array(
-				'internal' => $result['internal_push_results'],
-				'external' => $result['external_push_results'],
-			),
-		)
+		push( $params )
 	);
 
 	exit;
@@ -251,8 +245,10 @@ function push( $params ) {
 	update_post_meta( intval( $params['postId'] ), 'dt_connection_map', $connection_map );
 
 	return array(
-		'internal_push_results' => $internal_push_results,
-		'external_push_results' => $external_push_results,
+		'results' => array(
+			'internal' => $internal_push_results,
+			'external' => $external_push_results,
+		),
 	);
 }
 
@@ -546,7 +542,14 @@ syndicated<?php endif; ?>" data-connection-type="internal" data-connection-id="<
 
 					<div class="messages">
 						<div class="dt-success">
-							<?php echo esc_html( apply_filters( 'dt_successfully_distributed_message', esc_html__( 'Post successfully distributed.', 'distributor' ) ) ); ?>
+							<?php
+							/**
+							 * Filter distribution success message
+							 *
+							 * @param string Success message
+							 */
+							echo esc_html( apply_filters( 'dt_successfully_distributed_message', __( 'Post successfully distributed.', 'distributor' ) ) );
+							?>
 						</div>
 						<div class="dt-error">
 							<?php esc_html_e( 'There was an issue distributing the post.', 'distributor' ); ?>
