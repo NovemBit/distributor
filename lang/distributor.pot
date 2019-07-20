@@ -2,9 +2,9 @@
 # This file is distributed under the GPLv2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Distributor 1.5.0\n"
+"Project-Id-Version: Distributor 1.5.1-dev\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/distributor\n"
-"POT-Creation-Date: 2019-07-18 16:31:25+00:00\n"
+"POT-Creation-Date: 2019-07-20 10:47:59+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -61,28 +61,28 @@ msgstr ""
 msgid "Invalid post id."
 msgstr ""
 
-#: includes/classes/API/SubscriptionsController.php:207
+#: includes/classes/API/SubscriptionsController.php:208
 msgid "Post not distributed."
 msgstr ""
 
-#: includes/classes/API/SubscriptionsController.php:220
+#: includes/classes/API/SubscriptionsController.php:221
 msgid "No post data for update."
 msgstr ""
 
-#: includes/classes/API/SubscriptionsController.php:328
+#: includes/classes/API/SubscriptionsController.php:344
 msgid "Sorry, you are not allowed to create subscriptions."
 msgstr ""
 
-#: includes/classes/API/SubscriptionsController.php:343
+#: includes/classes/API/SubscriptionsController.php:359
 msgid "Cannot create existing subscription."
 msgstr ""
 
-#: includes/classes/API/SubscriptionsController.php:347
+#: includes/classes/API/SubscriptionsController.php:363
 msgid "Subscription post does not exist."
 msgstr ""
 
-#: includes/classes/API/SubscriptionsController.php:399
-#: includes/classes/API/SubscriptionsController.php:422
+#: includes/classes/API/SubscriptionsController.php:415
+#: includes/classes/API/SubscriptionsController.php:438
 msgid "Invalid post ID."
 msgstr ""
 
@@ -172,7 +172,7 @@ msgid "Edit \"%s\""
 msgstr ""
 
 #: includes/classes/ExternalConnectionListTable.php:74
-#: includes/classes/PullListTable.php:335
+#: includes/classes/PullListTable.php:338
 msgid "Edit"
 msgstr ""
 
@@ -199,35 +199,35 @@ msgstr ""
 msgid "Delete Permanently"
 msgstr ""
 
-#: includes/classes/ExternalConnections/WordPressExternalConnection.php:194
-#: includes/classes/ExternalConnections/WordPressExternalConnection.php:308
-#: includes/classes/ExternalConnections/WordPressExternalConnection.php:695
+#: includes/classes/ExternalConnections/WordPressExternalConnection.php:206
+#: includes/classes/ExternalConnections/WordPressExternalConnection.php:320
+#: includes/classes/ExternalConnections/WordPressExternalConnection.php:708
 msgid "Could not connect to API endpoint."
 msgstr ""
 
-#: includes/classes/ExternalConnections/WordPressExternalConnection.php:200
-#: includes/classes/ExternalConnections/WordPressExternalConnection.php:322
-#: includes/classes/ExternalConnections/WordPressExternalConnection.php:524
-#: includes/classes/ExternalConnections/WordPressExternalConnection.php:642
-#: includes/classes/ExternalConnections/WordPressExternalConnection.php:701
+#: includes/classes/ExternalConnections/WordPressExternalConnection.php:212
+#: includes/classes/ExternalConnections/WordPressExternalConnection.php:334
+#: includes/classes/ExternalConnections/WordPressExternalConnection.php:536
+#: includes/classes/ExternalConnections/WordPressExternalConnection.php:655
+#: includes/classes/ExternalConnections/WordPressExternalConnection.php:714
 msgid "Response body is empty"
 msgstr ""
 
-#: includes/classes/ExternalConnections/WordPressExternalConnection.php:206
-#: includes/classes/ExternalConnections/WordPressExternalConnection.php:212
-#: includes/classes/ExternalConnections/WordPressExternalConnection.php:532
+#: includes/classes/ExternalConnections/WordPressExternalConnection.php:218
+#: includes/classes/ExternalConnections/WordPressExternalConnection.php:224
+#: includes/classes/ExternalConnections/WordPressExternalConnection.php:544
 msgid "Could not determine remote post type endpoint"
 msgstr ""
 
-#: includes/classes/ExternalConnections/WordPressExternalConnection.php:314
+#: includes/classes/ExternalConnections/WordPressExternalConnection.php:326
 msgid "API endpoint error."
 msgstr ""
 
-#: includes/classes/ExternalConnections/WordPressExternalConnection.php:482
+#: includes/classes/ExternalConnections/WordPressExternalConnection.php:494
 msgid "Post id required to push"
 msgstr ""
 
-#: includes/classes/ExternalConnections/WordPressExternalConnection.php:650
+#: includes/classes/ExternalConnections/WordPressExternalConnection.php:663
 msgid "Could not determine remote post id."
 msgstr ""
 
@@ -240,103 +240,105 @@ msgstr ""
 msgid "Date"
 msgstr ""
 
-#: includes/classes/PullListTable.php:124
+#: includes/classes/PullListTable.php:109
 msgid "New"
 msgstr ""
 
-#: includes/classes/PullListTable.php:125
+#: includes/classes/PullListTable.php:110
+#: includes/classes/PullListTable.php:185
 msgid "Pulled"
 msgstr ""
 
-#: includes/classes/PullListTable.php:126
+#: includes/classes/PullListTable.php:111
+#: includes/classes/PullListTable.php:182
 msgid "Skipped"
 msgstr ""
 
-#: includes/classes/PullListTable.php:168
+#: includes/classes/PullListTable.php:153
 msgid "Select bulk action"
 msgstr ""
 
-#: includes/classes/PullListTable.php:177
+#: includes/classes/PullListTable.php:162
 msgid "Apply"
 msgstr ""
 
-#: includes/classes/PullListTable.php:199
+#: includes/classes/PullListTable.php:196
 msgid "Post deleted."
 msgstr ""
 
-#: includes/classes/PullListTable.php:201
-#: includes/classes/PullListTable.php:222
+#: includes/classes/PullListTable.php:198
+#: includes/classes/PullListTable.php:219
 msgid "Y/m/d g:i:s a"
 msgstr ""
 
-#: includes/classes/PullListTable.php:207
-#: includes/classes/PullListTable.php:230
+#: includes/classes/PullListTable.php:204
+#: includes/classes/PullListTable.php:227
 #. translators: %s: a human readable time
 msgid "%s ago"
 msgstr ""
 
-#: includes/classes/PullListTable.php:213
+#: includes/classes/PullListTable.php:210
 #. translators: %s: time of pull
 msgid "Pulled %s"
 msgstr ""
 
-#: includes/classes/PullListTable.php:218
-#: includes/classes/PullListTable.php:219
+#: includes/classes/PullListTable.php:215
+#: includes/classes/PullListTable.php:216
 msgid "Unpublished"
 msgstr ""
 
-#: includes/classes/PullListTable.php:232
+#: includes/classes/PullListTable.php:229
 msgid "Y/m/d"
 msgstr ""
 
-#: includes/classes/PullListTable.php:237
+#: includes/classes/PullListTable.php:234
 msgid "Published"
 msgstr ""
 
-#: includes/classes/PullListTable.php:240
+#: includes/classes/PullListTable.php:237
 msgid "Missed schedule"
 msgstr ""
 
-#: includes/classes/PullListTable.php:242
+#: includes/classes/PullListTable.php:239
 msgid "Scheduled"
 msgstr ""
 
-#: includes/classes/PullListTable.php:245
+#: includes/classes/PullListTable.php:242
 msgid "Last Modified"
 msgstr ""
 
-#: includes/classes/PullListTable.php:273
+#: includes/classes/PullListTable.php:270
 #: includes/external-connection-cpt.php:214
 msgid "None"
 msgstr ""
 
-#: includes/classes/PullListTable.php:320
-#: includes/classes/PullListTable.php:325
-#: includes/classes/PullListTable.php:334 includes/push-ui.php:438
-#: includes/push-ui.php:474
+#: includes/classes/PullListTable.php:322
+#: includes/classes/PullListTable.php:328
+#: includes/classes/PullListTable.php:337 includes/push-ui.php:493
+#: includes/push-ui.php:554
 msgid "View"
 msgstr ""
 
-#: includes/classes/PullListTable.php:321
-#: includes/classes/PullListTable.php:476
+#: includes/classes/PullListTable.php:323
+#: includes/classes/PullListTable.php:522
 msgid "Skip"
 msgstr ""
 
-#: includes/classes/PullListTable.php:343
+#: includes/classes/PullListTable.php:346
 msgid "(no title)"
 msgstr ""
 
-#: includes/classes/PullListTable.php:459
+#: includes/classes/PullListTable.php:505
 #. translators: %s: the post title or draft
 msgid "Select %s"
 msgstr ""
 
-#: includes/classes/PullListTable.php:475
-#: includes/classes/PullListTable.php:480
+#: includes/classes/PullListTable.php:521
+#: includes/classes/PullListTable.php:526
 msgid "Pull"
 msgstr ""
 
-#: includes/classes/PullListTable.php:509
+#: includes/classes/PullListTable.php:555
 msgid "Filter"
 msgstr ""
 
@@ -443,121 +445,121 @@ msgstr ""
 msgid "External Connection URL"
 msgstr ""
 
-#: includes/external-connection-cpt.php:483
+#: includes/external-connection-cpt.php:492
 msgid "Roles Allowed to Push"
 msgstr ""
 
-#: includes/external-connection-cpt.php:496
+#: includes/external-connection-cpt.php:505
 msgid ""
 "Select the roles of users on this site that will be allowed to push content "
 "to this connection. Keep in mind that pushing will use the permissions of "
 "the user credentials provided for this connection."
 msgstr ""
 
-#: includes/external-connection-cpt.php:505
+#: includes/external-connection-cpt.php:514
 msgid "Update Connection"
 msgstr ""
 
-#: includes/external-connection-cpt.php:507
+#: includes/external-connection-cpt.php:516
 msgid "Move to Trash"
 msgstr ""
 
-#: includes/external-connection-cpt.php:509
+#: includes/external-connection-cpt.php:518
 msgid "Create Connection"
 msgstr ""
 
-#: includes/external-connection-cpt.php:529
-#: includes/external-connection-cpt.php:598
-#: includes/external-connection-cpt.php:599
-#: includes/external-connection-cpt.php:620 includes/pull-ui.php:368
+#: includes/external-connection-cpt.php:538
+#: includes/external-connection-cpt.php:607
+#: includes/external-connection-cpt.php:608
+#: includes/external-connection-cpt.php:629 includes/pull-ui.php:368
 msgid "External Connections"
 msgstr ""
 
-#: includes/external-connection-cpt.php:529
-#: includes/external-connection-cpt.php:622
+#: includes/external-connection-cpt.php:538
+#: includes/external-connection-cpt.php:631
 msgid "Add New"
 msgstr ""
 
-#: includes/external-connection-cpt.php:555
+#: includes/external-connection-cpt.php:564
 msgid "External connections per page: "
 msgstr ""
 
-#: includes/external-connection-cpt.php:621
+#: includes/external-connection-cpt.php:630
 msgid "External Connection"
 msgstr ""
 
-#: includes/external-connection-cpt.php:623
+#: includes/external-connection-cpt.php:632
 msgid "Add New External Connection"
 msgstr ""
 
-#: includes/external-connection-cpt.php:624
+#: includes/external-connection-cpt.php:633
 msgid "Edit External Connection"
 msgstr ""
 
-#: includes/external-connection-cpt.php:625
+#: includes/external-connection-cpt.php:634
 msgid "New External Connection"
 msgstr ""
 
-#: includes/external-connection-cpt.php:626
+#: includes/external-connection-cpt.php:635
 msgid "All External Connections"
 msgstr ""
 
-#: includes/external-connection-cpt.php:627
+#: includes/external-connection-cpt.php:636
 msgid "View External Connection"
 msgstr ""
 
-#: includes/external-connection-cpt.php:628
+#: includes/external-connection-cpt.php:637
 msgid "Search External Connections"
 msgstr ""
 
-#: includes/external-connection-cpt.php:629
+#: includes/external-connection-cpt.php:638
 msgid "No external connections found."
 msgstr ""
 
-#: includes/external-connection-cpt.php:630
+#: includes/external-connection-cpt.php:639
 msgid "No external connections found in trash."
 msgstr ""
 
-#: includes/external-connection-cpt.php:664
-#: includes/external-connection-cpt.php:667
+#: includes/external-connection-cpt.php:673
+#: includes/external-connection-cpt.php:676
 msgid "External connection updated."
 msgstr ""
 
-#: includes/external-connection-cpt.php:665
+#: includes/external-connection-cpt.php:674
 msgid "Custom field updated."
 msgstr ""
 
-#: includes/external-connection-cpt.php:666
+#: includes/external-connection-cpt.php:675
 msgid "Custom field deleted."
 msgstr ""
 
-#: includes/external-connection-cpt.php:669
+#: includes/external-connection-cpt.php:678
 #. translators: %s: revision title
 msgid " External connection restored to revision from %s"
 msgstr ""
 
-#: includes/external-connection-cpt.php:670
+#: includes/external-connection-cpt.php:679
 msgid "External connection created."
 msgstr ""
 
-#: includes/external-connection-cpt.php:671
+#: includes/external-connection-cpt.php:680
 msgid "External connection saved."
 msgstr ""
 
-#: includes/external-connection-cpt.php:672
+#: includes/external-connection-cpt.php:681
 msgid "External connection submitted."
 msgstr ""
 
-#: includes/external-connection-cpt.php:675
+#: includes/external-connection-cpt.php:684
 #. translators: %s: a date and time
 msgid "External connection scheduled for: <strong>%1$s</strong>."
 msgstr ""
 
-#: includes/external-connection-cpt.php:676
+#: includes/external-connection-cpt.php:685
 msgid "M j, Y @ G:i"
 msgstr ""
 
-#: includes/external-connection-cpt.php:678
+#: includes/external-connection-cpt.php:687
 msgid "External connection draft updated."
 msgstr ""
 
@@ -613,53 +615,53 @@ msgstr ""
 msgid "Search"
 msgstr ""
 
-#: includes/push-ui.php:307
+#: includes/push-ui.php:459
 #. translators: %s: post type name
 msgid "This %s has been distributed from"
 msgstr ""
 
-#: includes/push-ui.php:310
+#: includes/push-ui.php:462
 msgid "You can "
 msgstr ""
 
-#: includes/push-ui.php:311
+#: includes/push-ui.php:463
 msgid "view the original"
 msgstr ""
 
-#: includes/push-ui.php:448
+#: includes/push-ui.php:475
 #. translators: %s the post title
 msgid "Distribute &quot;%s&quot; to other connections."
 msgstr ""
 
-#: includes/push-ui.php:453
+#: includes/push-ui.php:480
 msgid "Search available connections"
 msgstr ""
 
-#: includes/push-ui.php:483
+#: includes/push-ui.php:503
 msgid "Selected connections"
 msgstr ""
 
-#: includes/push-ui.php:484
+#: includes/push-ui.php:506
 msgid "No connections selected"
 msgstr ""
 
-#: includes/push-ui.php:501
+#: includes/push-ui.php:524
 msgid "Distribute"
 msgstr ""
 
-#: includes/push-ui.php:501
+#: includes/push-ui.php:524
 msgid "As draft"
 msgstr ""
 
-#: includes/push-ui.php:507
+#: includes/push-ui.php:530 includes/push-ui.php:583
 msgid "Post successfully distributed."
 msgstr ""
 
-#: includes/push-ui.php:510
+#: includes/push-ui.php:533 includes/push-ui.php:587
 msgid "There was an issue distributing the post."
 msgstr ""
 
-#: includes/push-ui.php:516
+#: includes/push-ui.php:539
 msgid "No connections available for distribution."
 msgstr ""
 
@@ -759,7 +761,7 @@ msgstr ""
 msgid "Security error!"
 msgstr ""
 
-#: includes/subscriptions.php:325
+#: includes/subscriptions.php:343
 msgid "Distributor Subscription"
 msgstr ""
 
@@ -843,28 +845,28 @@ msgstr ""
 msgid "Input"
 msgstr ""
 
-#: vendor/yahnis-elsts/plugin-update-checker/Puc/v4p5/Plugin/Ui.php:54
+#: vendor/yahnis-elsts/plugin-update-checker/Puc/v4p6/Plugin/Ui.php:54
 msgid "View details"
 msgstr ""
 
-#: vendor/yahnis-elsts/plugin-update-checker/Puc/v4p5/Plugin/Ui.php:77
+#: vendor/yahnis-elsts/plugin-update-checker/Puc/v4p6/Plugin/Ui.php:77
 msgid "More information about %s"
 msgstr ""
 
-#: vendor/yahnis-elsts/plugin-update-checker/Puc/v4p5/Plugin/Ui.php:128
+#: vendor/yahnis-elsts/plugin-update-checker/Puc/v4p6/Plugin/Ui.php:128
 msgid "Check for updates"
 msgstr ""
 
-#: vendor/yahnis-elsts/plugin-update-checker/Puc/v4p5/Plugin/Ui.php:223
+#: vendor/yahnis-elsts/plugin-update-checker/Puc/v4p6/Plugin/Ui.php:223
 msgid "Unknown update checker status \"%s\""
 msgstr ""
 
-#: vendor/yahnis-elsts/plugin-update-checker/Puc/v4p5/Vcs/PluginUpdateChecker.php:98
+#: vendor/yahnis-elsts/plugin-update-checker/Puc/v4p6/Vcs/PluginUpdateChecker.php:98
 msgid "There is no changelog available."
 msgstr ""
 
 #. Plugin URI of the plugin/theme
-msgid "https://github.com/10up/distributor"
+msgid "https://github.com/NovemBit/distributor"
 msgstr ""
 
 #. Description of the plugin/theme
@@ -886,17 +888,17 @@ msgctxt "verb"
 msgid "Trash"
 msgstr ""
 
-#: vendor/yahnis-elsts/plugin-update-checker/Puc/v4p5/Plugin/Ui.php:213
+#: vendor/yahnis-elsts/plugin-update-checker/Puc/v4p6/Plugin/Ui.php:213
 msgctxt "the plugin title"
 msgid "The %s plugin is up to date."
 msgstr ""
 
-#: vendor/yahnis-elsts/plugin-update-checker/Puc/v4p5/Plugin/Ui.php:215
+#: vendor/yahnis-elsts/plugin-update-checker/Puc/v4p6/Plugin/Ui.php:215
 msgctxt "the plugin title"
 msgid "A new version of the %s plugin is available."
 msgstr ""
 
-#: vendor/yahnis-elsts/plugin-update-checker/Puc/v4p5/Plugin/Ui.php:217
+#: vendor/yahnis-elsts/plugin-update-checker/Puc/v4p6/Plugin/Ui.php:217
 msgctxt "the plugin title"
 msgid "Could not determine if updates are available for %s."
 msgstr ""
