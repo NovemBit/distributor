@@ -234,8 +234,26 @@ function delete_subscriptions( $post_id ) {
  * @since  1.0
  */
 function send_notifications( $post_id ) {
-	if ( ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) || wp_is_post_revision( $post_id ) || ! current_user_can( 'edit_post', $post_id ) ) {
+	if ( ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) || wp_is_post_revision( $post_id ) ) {
 		return;
+	}
+
+	if ( ! wp_doing_cron() ) { //phpcs:ignore
+		if ( ! current_user_can( 'edit_post', $post_id ) ) {
+			return;
+		}
+
+		/**
+		 * Add possibility to send notification in background
+		 *
+		 * @param bool  true    Whether run 'send notification' in background or not, default 'false'
+		 * @param array $params request data
+		 */
+		$allow_send_notification = apply_filters( 'dt_allow_send_notifications', true, $post_id );
+
+		if ( false === $allow_send_notification ) {
+			return;
+		}
 	}
 
 	$subscriptions = get_post_meta( $post_id, 'dt_subscriptions', true );

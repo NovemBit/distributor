@@ -1,14 +1,15 @@
 <?php
+
 /**
  * Plugin Name:       Distributor
  * Description:       Makes it easy to syndicate and reuse content across your websites, whether inside of a multisite or across the web.
- * Version:           1.4.2
- * Author:            10up Inc.
+ * Version:           1.5.1
+ * Author:            Novembit.
  * Author URI:        https://distributorplugin.com
  * License:           GPLv2 or later
  * Text Domain:       distributor
  * Domain Path:       /lang/
- * GitHub Plugin URI: https://github.com/10up/distributor
+ * GitHub Plugin URI: https://github.com/NovemBit/distributor
  *
  * @package distributor
  */
@@ -17,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
-define( 'DT_VERSION', '1.4.1' );
+define( 'DT_VERSION', '1.5.1' );
 define( 'DT_PLUGIN_FILE', preg_replace( '#^.*plugins/(.*)$#i', '$1', __FILE__ ) );
 
 // Define a constant if we're network activated to allow plugin to respond accordingly.
@@ -106,6 +107,7 @@ require_once __DIR__ . '/includes/syndicated-post-ui.php';
 require_once __DIR__ . '/includes/distributed-post-ui.php';
 require_once __DIR__ . '/includes/settings.php';
 require_once __DIR__ . '/includes/template-tags.php';
+require_once __DIR__ . '/includes/post-specific-content-handler.php';
 
 if ( \Distributor\Utils\is_vip_com() ) {
 	add_filter( 'dt_network_site_connection_enabled', '__return_false', 9 );
@@ -126,7 +128,7 @@ if ( class_exists( 'Puc_v4_Factory' ) ) {
 	if ( $valid_license ) {
 		// @codingStandardsIgnoreStart
 		$updateChecker = Puc_v4_Factory::buildUpdateChecker(
-			'https://github.com/10up/distributor/',
+			'https://github.com/NovemBit/distributor/',
 			__FILE__,
 			'distributor'
 		);
@@ -178,4 +180,4 @@ add_action(
 \Distributor\SyndicatedPostUI\setup();
 \Distributor\DistributedPostUI\setup();
 \Distributor\Settings\setup();
-
+\Distributor\PostSpecificContentHandler\setup();
