@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Plugin Name:       Distributor
  * Description:       Makes it easy to syndicate and reuse content across your websites, whether inside of a multisite or across the web.
