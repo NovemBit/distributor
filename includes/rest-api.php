@@ -48,11 +48,11 @@ function setup() {
  * @return Object $prepared_post The filtered post object.
  */
 function filter_distributor_content( $prepared_post, $request ) {
-
-	if ( \Distributor\Utils\is_using_gutenberg( get_post( $prepared_post->ID ) ) && isset( $request['distributor_raw_content'] ) ) {
-		if ( \Distributor\Utils\dt_use_block_editor_for_post_type( $prepared_post->post_type ) ) {
+	if (
+		isset( $request['distributor_raw_content'] ) &&
+		\Distributor\Utils\dt_use_block_editor_for_post_type( $prepared_post->post_type )
+	) {
 			$prepared_post->post_content = $request['distributor_raw_content'];
-		}
 	}
 	return $prepared_post;
 }
@@ -251,4 +251,43 @@ function register_endpoints() {
 			),
 		)
 	);
+	/**
+	 * Register custom route for authorization for better performance
+	 *
+	 * @see https://github.com/10up/distributor/issues/244
+	 */
+	register_rest_route(
+		'wp/v2',
+		'/distributor/permissions',
+		array(
+			'methods'  => 'GET',
+			'callback' => __NAMESPACE__ . '\check_permissions',
+		)
+	);
+}
+
+/**
+ * Check user permissions for available post types
+ *
+ * @see https://github.com/10up/distributor/issues/244
+ */
+function check_permissions() {
+	$types    = get_post_types(
+		array(
+			'show_in_rest' => true,
+		),
+		'objects'
+	);
+	$response = array(
+		'can_get'  => array(),
+		'can_post' => array(),
+	);
+	foreach ( $types as $type ) {
+		$caps                  = $type->cap;
+		$response['can_get'][] = $type->name;
+		if ( current_user_can( $caps->edit_posts ) && current_user_can( $caps->create_posts ) && current_user_can( $caps->publish_posts ) ) {
+			$response['can_post'][] = $type->name;
+		}
+	}
+	return $response;
 }
