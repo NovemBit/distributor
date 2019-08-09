@@ -668,6 +668,16 @@ class WordPressExternalConnection extends ExternalConnection {
 		if ( ! empty( $response_headers['X-Distributor'] ) ) {
 			// We have Distributor on the other side
 			\Distributor\Subscriptions\create_subscription( $post_id, $remote_id, untrailingslashit( $this->base_url ), $signature );
+			$target_url = untrailingslashit( $this->base_url );
+			/**
+			 * Action triggered when a post subscription created
+			 *
+			 * @param int                $post_id    The post ID that was pushed.
+			 * @param int $remote_id Remote post ID.
+			 * @param string $signature Created subscription signature.
+			 * @param string $target_url Subscription target url.
+			 */
+			do_action( 'dt_post_subscription_created', $post_id, $remote_id, $signature, $target_url );
 		}
 
 		return $remote_id;
