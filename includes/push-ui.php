@@ -540,7 +540,7 @@ function menu_content() {
 					 * @param int $post->ID Post ID.
 					 * @param array Connection map.
 					 */
-					do_action( 'dt_add_to_menu_content', $post->ID, $connection_map );
+					do_action( 'dt_add_to_menu_content', $post->ID );
 				?>
 
 			<# } else { #>
