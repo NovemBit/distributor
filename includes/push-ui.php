@@ -176,7 +176,7 @@ function get_connections() {
 				'id'         => $connection->id,
 				'url'        => $connection->base_url,
 				'name'       => $connection->name,
-				'syndicated' => ( ! empty( $connection_map['external'][ (int) $external_connection->ID ] ) ) ? true : false,
+				'syndicated' => ! empty( $connection_map['external'][ (int) $external_connection->ID ] ) ? $connection_map['external'][ (int) $external_connection->ID ] : false,
 			];
 		}
 	}
@@ -595,4 +595,3 @@ function menu_content() {
 		<?php
 	}
 }
-
