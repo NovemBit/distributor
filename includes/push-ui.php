@@ -533,6 +533,15 @@ function menu_content() {
 						<?php esc_html_e( 'There was an issue distributing the post.', 'distributor' ); ?>
 					</div>
 				</div>
+				<?php
+					/**
+					 * Add necessary markup/actions in menu content
+					 *
+					 * @param int $post->ID Post ID.
+					 * @param array Connection map.
+					 */
+					do_action( 'dt_add_to_menu_content', $post->ID, $connection_map );
+				?>
 
 			<# } else { #>
 				<p class="no-connections-notice">
