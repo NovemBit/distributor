@@ -321,6 +321,14 @@ function send_notifications( $post_id ) {
 				 */
 				unset( $subscriptions[ $subscription_key ] );
 
+				/**
+				 * Handle additional post meta
+				 *
+				 * @param int $post_id Post ID.
+				 * @param int $remote_post_id Remote Post ID.
+				 */
+				do_action( 'dt_remove_subscription_data', $post_id, $remote_post_id );
+
 				$update_subscriptions = true;
 
 				wp_delete_post( $subscription_id, true );
@@ -354,5 +362,3 @@ function register_cpt() {
 
 	register_post_type( 'dt_subscription', $args );
 }
-
-
