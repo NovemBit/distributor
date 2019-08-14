@@ -513,6 +513,15 @@ function set_taxonomy_terms( $post_id, $taxonomy_terms ) {
 
 		wp_set_object_terms( $post_id, $term_ids, $taxonomy );
 	}
+		/**
+	 * Action whether term hierarchy was updated.
+	 *
+	 * @since 1.3.5
+	 *
+	 * @param int    $post_id Post ID.
+	 * @param array  $tax_term_id_mapping The taxonomy term id mapping.
+	 */
+	do_action( 'dt_post_term_hierarchy_saved', $post_id, $tax_term_id_mapping );
 }
 
 
