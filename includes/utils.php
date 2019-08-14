@@ -418,6 +418,7 @@ function prepare_taxonomy_terms( $post_id ) {
  * @since 1.0
  */
 function set_taxonomy_terms( $post_id, $taxonomy_terms ) {
+	$tax_term_id_mapping = array();
 	// Now let's add the taxonomy/terms to syndicated post
 	foreach ( $taxonomy_terms as $taxonomy => $terms ) {
 		// Continue if taxonomy doesnt exist
@@ -474,6 +475,8 @@ function set_taxonomy_terms( $post_id, $taxonomy_terms ) {
 			}
 		}
 
+		$tax_term_id_mapping[ $taxonomy ] = $term_id_mapping;
+		
 		// Handle hierarchical terms if they exist
 		/**
 		 * Filter whether term hierarchy should be updated.
