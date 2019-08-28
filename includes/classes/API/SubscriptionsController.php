@@ -212,6 +212,13 @@ class SubscriptionsController extends \WP_REST_Controller {
 		if ( isset( $request['original_deleted'] ) ) {
 			update_post_meta( $post_id, 'dt_original_post_deleted', true );
 
+			/**
+			 * Fire an action in case original post is deleted
+			 *
+			 * @param int $post_id The post id, which original post is deleted
+			 */
+			do_action( 'dt_on_original_post_delete', (int) $request['post_id'] );
+
 			$response = new \WP_REST_Response();
 			$response->set_data( array( 'updated' => true ) );
 
