@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file, per [the Keep a Changelog standard](http://keepachangelog.com/).
 
+## [1.5.4] - 2019-09-19
+### Fixed
+- Showing "Limited connection established. Authentication failed" for authenticated connections issue [#457](https://github.com/10up/distributor/issues/457)
+
 ## [1.5.0] - 2019-07-18
 ### Added
 - Provide more context to the `dt_create_missing_terms` hook (props [@mmcachran](https://github.com/mmcachran) and [@helen](https://github.com/helen) via [#378](https://github.com/10up/distributor/pull/378))
