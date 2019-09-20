@@ -552,7 +552,7 @@ class WordPressExternalConnection extends ExternalConnection {
 		$post_body = [
 			'title'                          => get_the_title( $post_id ),
 			'slug'                           => $post->post_name,
-			'content'                        => Utils\get_processed_content( $post->post_content ),
+			'content'                        => $post->post_content,
 			'type'                           => $post->post_type,
 			'status'                         => ( ! empty( $args['post_status'] ) ) ? $args['post_status'] : 'publish',
 			'excerpt'                        => $post->post_excerpt,
