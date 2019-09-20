@@ -264,7 +264,7 @@ function send_notifications( $post_id ) {
 				'title'             => get_the_title( $post_id ),
 				'slug'              => $post->post_name,
 				'post_type'         => $post->post_type,
-				'content'           => Utils\get_processed_content( $post->post_content ),
+				'content'           => $post->post_content,
 				'excerpt'           => $post->post_excerpt,
 				'distributor_media' => \Distributor\Utils\prepare_media( $post_id ),
 				'distributor_terms' => \Distributor\Utils\prepare_taxonomy_terms( $post_id ),
