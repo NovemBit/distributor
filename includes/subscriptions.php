@@ -238,6 +238,12 @@ function send_notifications( $post_id ) {
 		return;
 	}
 
+	$subscriptions = get_post_meta( $post_id, 'dt_subscriptions', true );
+
+	if ( empty( $subscriptions ) ) {
+		return;
+	}
+
 	if ( ! wp_doing_cron() ) { //phpcs:ignore
 		if ( ! current_user_can( 'edit_post', $post_id ) ) {
 			return;
@@ -254,12 +260,6 @@ function send_notifications( $post_id ) {
 		if ( false === $allow_send_notification ) {
 			return;
 		}
-	}
-
-	$subscriptions = get_post_meta( $post_id, 'dt_subscriptions', true );
-
-	if ( empty( $subscriptions ) ) {
-		return;
 	}
 
 	$post = get_post( $post_id );
