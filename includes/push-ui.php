@@ -175,7 +175,7 @@ function get_connections() {
 				'type'       => 'external',
 				'id'         => $connection->id,
 				'url'        => $connection->base_url,
-				'name'       => $connection->name,
+				'name'       => html_entity_decode($connection->name),
 				'syndicated' => ! empty( $connection_map['external'][ (int) $external_connection->ID ] ) ? $connection_map['external'][ (int) $external_connection->ID ] : false,
 			];
 		}
