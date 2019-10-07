@@ -537,14 +537,36 @@ function set_taxonomy_terms( $post_id, $taxonomy_terms ) {
  * @since 1.0
  */
 function set_media( $post_id, $media ) {
+	global $wpdb;
 	$settings            = get_settings(); // phpcs:ignore
 	$current_media_posts = get_attached_media( get_allowed_mime_types(), $post_id );
 	$current_media       = [];
 
-	// Create mapping so we don't create duplicates
+	$current_attachment_ids_concat = '';
 	foreach ( $current_media_posts as $media_post ) {
-		$original                   = get_post_meta( $media_post->ID, 'dt_original_media_url', true );
-		$current_media[ $original ] = $media_post->ID;
+		$current_attachment_ids_concat .= $wpdb->prepare( '%d', $media_post->ID ) . ',';
+	}
+
+	$original_media_meta_data_query = "SELECT 
+										  p1.post_id,
+										  p1.meta_value media_id,
+										  p2.meta_value media_url 
+										FROM
+										  {$wpdb->prefix}postmeta p1 
+										  INNER JOIN {$wpdb->prefix}postmeta p2 
+											ON p1.post_id = p2.post_id 
+											AND p2.meta_key = 'dt_original_media_url' 
+										WHERE p1.meta_key = 'dt_original_media_id' 
+										  AND p1.post_id IN (" . rtrim( $current_attachment_ids_concat, ',' ) . ')';
+
+	$original_media_meta_data = $wpdb->get_results( $original_media_meta_data_query, ARRAY_A );
+
+	$original_media_ids = [];
+
+	// Create mapping so we don't create duplicates
+	foreach ( $original_media_meta_data as $value ) {
+		$original_media_ids[ $value['media_url'] ] = $value['media_id'];
+		$current_media[ $value['media_url'] ] 	   = $value['post_id'];
 	}
 
 	$found_featured_image = false;
@@ -559,8 +581,9 @@ function set_media( $post_id, $media ) {
 		$media = ( false !== $featured_key ) ? array( $media[ $featured_key ] ) : array();
 	}
 
+	$new_media_original_ids = [];
 	foreach ( $media as $media_item ) {
-
+		$new_media_original_ids[ $media_item['source_url'] ] = $media_item['id'];
 		// Delete duplicate if it exists (unless filter says otherwise)
 		/**
 		 * Filter whether media should be deleted and replaced if it already exists.
@@ -577,7 +600,8 @@ function set_media( $post_id, $media ) {
 
 			$image_id = process_media( $media_item['source_url'], $post_id );
 		} else {
-			if ( ! empty( $current_media[ $media_item['source_url'] ] ) ) {
+			// if ( ! empty( $current_media[ $media_item['source_url'] ] ) ) {
+			if ( in_array( $media_item['id'], $original_media_ids ) ) {
 				$image_id = $current_media[ $media_item['source_url'] ];
 			} else {
 				$image_id = process_media( $media_item['source_url'], $post_id );
@@ -611,6 +635,23 @@ function set_media( $post_id, $media ) {
 				'post_excerpt' => $media_item['caption']['raw'],
 			]
 		);
+	}
+
+	// Deleted media delete on spoke also
+	$deleted_media_ids = [];
+	foreach ( $original_media_ids as $k => $original_media_id ) {
+		if ( ! in_array( $original_media_id, $new_media_original_ids ) ) {
+			$deleted_media_ids[ $k ] = $current_media[ $k ];
+		}
+	}
+
+	foreach ( $deleted_media_ids as $k => $deleted_media_id ) {
+		$force_delete = false;
+		$response = @getimagesize( $k );
+		if( false === $response ) {
+			$force_delete = true;
+		}
+		wp_delete_attachment( $deleted_media_id, $force_delete );
 	}
 
 	if ( ! $found_featured_image ) {
