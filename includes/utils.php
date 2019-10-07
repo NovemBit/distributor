@@ -565,16 +565,9 @@ function set_media( $post_id, $media ) {
 
 	// Create mapping so we don't create duplicates
 	foreach ( $original_media_meta_data as $value ) {
-		$original_media_ids[]                 = $value['media_id'];
-		$current_media[ $value['media_url'] ] = $value['post_id'];
+		$original_media_ids[ $value['media_url'] ] = $value['media_id'];
+		$current_media[ $value['media_url'] ] 	   = $value['post_id'];
 	}
-
-	// Create mapping so we don't create duplicates
-	/*
-	foreach ( $current_media_posts as $media_post ) {
-		$original                   = get_post_meta( $media_post->ID, 'dt_original_media_url', true );
-		$current_media[ $original ] = $media_post->ID;
-	}*/
 
 	$found_featured_image = false;
 
@@ -648,7 +641,7 @@ function set_media( $post_id, $media ) {
 	$deleted_media_ids = [];
 	foreach ( $original_media_ids as $k => $original_media_id ) {
 		if ( ! in_array( $original_media_id, $new_media_original_ids ) ) {
-			$deleted_media_ids[ $k ] = $original_media_id;
+			$deleted_media_ids[ $k ] = $current_media[ $k ];
 		}
 	}
 
