@@ -295,6 +295,10 @@ function send_notifications( $post_id ) {
 			}
 		}
 
+		if ( is_post_type_hierarchical( $post->post_type ) ) {
+			$post_body['distributor_original_post_parent'] = (int) $post->post_parent;
+		}
+
 		$request = wp_remote_post(
 			untrailingslashit( $target_url ) . '/wp/v2/dt_subscription/receive',
 			[
