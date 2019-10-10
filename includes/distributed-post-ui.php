@@ -109,6 +109,10 @@ function enqueue_post_scripts_styles( $hook ) {
 
 	global $post;
 
+	if ( empty( $post ) ) {
+		return;
+	}
+
 	$connection_map = get_post_meta( $post->ID, 'dt_connection_map', true );
 
 	if ( empty( $connection_map ) ) {

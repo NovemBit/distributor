@@ -479,6 +479,10 @@ function enqueue_post_scripts( $hook ) {
 
 	global $post;
 
+	if ( empty( $post ) ) {
+		return;
+	}
+
 	$original_blog_id   = get_post_meta( $post->ID, 'dt_original_blog_id', true );
 	$original_post_id   = get_post_meta( $post->ID, 'dt_original_post_id', true );
 	$original_source_id = get_post_meta( $post->ID, 'dt_original_source_id', true );
