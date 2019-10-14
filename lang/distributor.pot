@@ -1,10 +1,10 @@
-# Copyright (C) 2019 10up Inc.
+# Copyright (C) 2019 Novembit.
 # This file is distributed under the GPLv2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Distributor 1.5.1-dev\n"
+"Project-Id-Version: Distributor 1.5.5-dev\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/distributor\n"
-"POT-Creation-Date: 2019-07-20 10:47:59+00:00\n"
+"POT-Creation-Date: 2019-10-14 14:26:27+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -65,24 +65,24 @@ msgstr ""
 msgid "Post not distributed."
 msgstr ""
 
-#: includes/classes/API/SubscriptionsController.php:221
+#: includes/classes/API/SubscriptionsController.php:228
 msgid "No post data for update."
 msgstr ""
 
-#: includes/classes/API/SubscriptionsController.php:344
+#: includes/classes/API/SubscriptionsController.php:351
 msgid "Sorry, you are not allowed to create subscriptions."
 msgstr ""
 
-#: includes/classes/API/SubscriptionsController.php:359
+#: includes/classes/API/SubscriptionsController.php:366
 msgid "Cannot create existing subscription."
 msgstr ""
 
-#: includes/classes/API/SubscriptionsController.php:363
+#: includes/classes/API/SubscriptionsController.php:370
 msgid "Subscription post does not exist."
 msgstr ""
 
-#: includes/classes/API/SubscriptionsController.php:415
-#: includes/classes/API/SubscriptionsController.php:438
+#: includes/classes/API/SubscriptionsController.php:422
+#: includes/classes/API/SubscriptionsController.php:445
 msgid "Invalid post ID."
 msgstr ""
 
@@ -201,7 +201,7 @@ msgstr ""
 
 #: includes/classes/ExternalConnections/WordPressExternalConnection.php:206
 #: includes/classes/ExternalConnections/WordPressExternalConnection.php:320
-#: includes/classes/ExternalConnections/WordPressExternalConnection.php:708
+#: includes/classes/ExternalConnections/WordPressExternalConnection.php:718
 msgid "Could not connect to API endpoint."
 msgstr ""
 
@@ -209,7 +209,7 @@ msgstr ""
 #: includes/classes/ExternalConnections/WordPressExternalConnection.php:334
 #: includes/classes/ExternalConnections/WordPressExternalConnection.php:536
 #: includes/classes/ExternalConnections/WordPressExternalConnection.php:655
-#: includes/classes/ExternalConnections/WordPressExternalConnection.php:714
+#: includes/classes/ExternalConnections/WordPressExternalConnection.php:724
 msgid "Response body is empty"
 msgstr ""
 
@@ -315,7 +315,7 @@ msgstr ""
 #: includes/classes/PullListTable.php:322
 #: includes/classes/PullListTable.php:328
 #: includes/classes/PullListTable.php:337 includes/push-ui.php:493
-#: includes/push-ui.php:554
+#: includes/push-ui.php:563
 msgid "View"
 msgstr ""
 
@@ -434,7 +434,7 @@ msgid "Label this external connection"
 msgstr ""
 
 #: includes/external-connection-cpt.php:396
-msgid "External Connection Details"
+msgid "Connection Details"
 msgstr ""
 
 #: includes/external-connection-cpt.php:448
@@ -442,7 +442,7 @@ msgid "Authentication Method"
 msgstr ""
 
 #: includes/external-connection-cpt.php:473
-msgid "External Connection URL"
+msgid "Connection URL"
 msgstr ""
 
 #: includes/external-connection-cpt.php:492
@@ -472,7 +472,7 @@ msgstr ""
 #: includes/external-connection-cpt.php:607
 #: includes/external-connection-cpt.php:608
 #: includes/external-connection-cpt.php:629 includes/pull-ui.php:368
-msgid "External Connections"
+msgid "Connections"
 msgstr ""
 
 #: includes/external-connection-cpt.php:538
@@ -485,31 +485,31 @@ msgid "External connections per page: "
 msgstr ""
 
 #: includes/external-connection-cpt.php:630
-msgid "External Connection"
+msgid "Connection"
 msgstr ""
 
 #: includes/external-connection-cpt.php:632
-msgid "Add New External Connection"
+msgid "Add New Connection"
 msgstr ""
 
 #: includes/external-connection-cpt.php:633
-msgid "Edit External Connection"
+msgid "Edit Connection"
 msgstr ""
 
 #: includes/external-connection-cpt.php:634
-msgid "New External Connection"
+msgid "New Connection"
 msgstr ""
 
 #: includes/external-connection-cpt.php:635
-msgid "All External Connections"
+msgid "All Connections"
 msgstr ""
 
 #: includes/external-connection-cpt.php:636
-msgid "View External Connection"
+msgid "View Connection"
 msgstr ""
 
 #: includes/external-connection-cpt.php:637
-msgid "Search External Connections"
+msgid "Search Connections"
 msgstr ""
 
 #: includes/external-connection-cpt.php:638
@@ -653,15 +653,15 @@ msgstr ""
 msgid "As draft"
 msgstr ""
 
-#: includes/push-ui.php:530 includes/push-ui.php:583
+#: includes/push-ui.php:530 includes/push-ui.php:592
 msgid "Post successfully distributed."
 msgstr ""
 
-#: includes/push-ui.php:533 includes/push-ui.php:587
+#: includes/push-ui.php:533 includes/push-ui.php:596
 msgid "There was an issue distributing the post."
 msgstr ""
 
-#: includes/push-ui.php:539
+#: includes/push-ui.php:548
 msgid "No connections available for distribution."
 msgstr ""
 
@@ -761,7 +761,7 @@ msgstr ""
 msgid "Security error!"
 msgstr ""
 
-#: includes/subscriptions.php:343
+#: includes/subscriptions.php:355
 msgid "Distributor Subscription"
 msgstr ""
 
@@ -790,7 +790,7 @@ msgstr ""
 msgid "Distributed %s do not support revisions unless unlinked."
 msgstr ""
 
-#: includes/syndicated-post-ui.php:429 includes/syndicated-post-ui.php:540
+#: includes/syndicated-post-ui.php:429 includes/syndicated-post-ui.php:544
 #. translators: %d: the blog ID
 #. translators: %d: the original blog id
 msgid "Blog #%d"
@@ -876,7 +876,7 @@ msgid ""
 msgstr ""
 
 #. Author of the plugin/theme
-msgid "10up Inc."
+msgid "Novembit."
 msgstr ""
 
 #. Author URI of the plugin/theme
