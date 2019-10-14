@@ -365,7 +365,7 @@ function dashboard() {
 
 					<?php if ( ! empty( $external_connection_group ) ) : ?>
 						<?php if ( ! empty( $internal_connection_group ) ) : ?>
-							<optgroup label="<?php esc_html_e( 'External Connections', 'distributor' ); ?>">
+							<optgroup label="<?php esc_html_e( 'Connections', 'distributor' ); ?>">
 						<?php endif; ?>
 							<?php
 							foreach ( $external_connection_group as $connection ) :

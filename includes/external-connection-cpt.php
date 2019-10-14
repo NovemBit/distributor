@@ -393,7 +393,7 @@ function save_post( $post_id ) {
  * @since 0.8
  */
 function add_meta_boxes() {
-	add_meta_box( 'dt_external_connection_details', esc_html__( 'External Connection Details', 'distributor' ), __NAMESPACE__ . '\meta_box_external_connection_details', 'dt_ext_connection', 'normal', 'core' );
+	add_meta_box( 'dt_external_connection_details', esc_html__( 'Connection Details', 'distributor' ), __NAMESPACE__ . '\meta_box_external_connection_details', 'dt_ext_connection', 'normal', 'core' );
 }
 
 /**
@@ -470,7 +470,7 @@ function meta_box_external_connection_details( $post ) {
 		</div>
 	<?php endforeach; ?>
 	<div class="connection-field-wrap hide-until-authed">
-		<label for="dt_external_connection_url"><?php esc_html_e( 'External Connection URL', 'distributor' ); ?></label><br>
+		<label for="dt_external_connection_url"><?php esc_html_e( 'Connection URL', 'distributor' ); ?></label><br>
 		<span class="external-connection-url-field-wrapper">
 			<input value="<?php echo esc_url( $external_connection_url ); ?>" type="text" name="dt_external_connection_url" id="dt_external_connection_url" class="widefat external-connection-url-field">
 		</span>
@@ -535,7 +535,7 @@ function dashboard() {
 	?>
 
 	<div class="wrap">
-		<h1><?php esc_html_e( 'External Connections', 'distributor' ); ?> <a href="<?php echo esc_url( admin_url( 'post-new.php?post_type=dt_ext_connection' ) ); ?>" class="page-title-action"><?php esc_html_e( 'Add New', 'distributor' ); ?></a></h1>
+		<h1><?php esc_html_e( 'Connections', 'distributor' ); ?> <a href="<?php echo esc_url( admin_url( 'post-new.php?post_type=dt_ext_connection' ) ); ?>" class="page-title-action"><?php esc_html_e( 'Add New', 'distributor' ); ?></a></h1>
 
 		<?php $connection_list_table->views(); ?>
 
@@ -604,8 +604,8 @@ function add_submenu_item() {
 	unset( $submenu['distributor'][0] );
 	add_submenu_page(
 		'distributor',
-		esc_html__( 'External Connections', 'distributor' ),
-		esc_html__( 'External Connections', 'distributor' ),
+		esc_html__( 'Connections', 'distributor' ),
+		esc_html__( 'Connections', 'distributor' ),
 		/**
 		 * Filter Distributor capabilities allowed to manage external connections.
 		 *
@@ -626,15 +626,15 @@ function add_submenu_item() {
 function setup_cpt() {
 
 	$labels = array(
-		'name'               => esc_html__( 'External Connections', 'distributor' ),
-		'singular_name'      => esc_html__( 'External Connection', 'distributor' ),
+		'name'               => esc_html__( 'Connections', 'distributor' ),
+		'singular_name'      => esc_html__( 'Connection', 'distributor' ),
 		'add_new'            => esc_html__( 'Add New', 'distributor' ),
-		'add_new_item'       => esc_html__( 'Add New External Connection', 'distributor' ),
-		'edit_item'          => esc_html__( 'Edit External Connection', 'distributor' ),
-		'new_item'           => esc_html__( 'New External Connection', 'distributor' ),
-		'all_items'          => esc_html__( 'All External Connections', 'distributor' ),
-		'view_item'          => esc_html__( 'View External Connection', 'distributor' ),
-		'search_items'       => esc_html__( 'Search External Connections', 'distributor' ),
+		'add_new_item'       => esc_html__( 'Add New Connection', 'distributor' ),
+		'edit_item'          => esc_html__( 'Edit Connection', 'distributor' ),
+		'new_item'           => esc_html__( 'New Connection', 'distributor' ),
+		'all_items'          => esc_html__( 'All Connections', 'distributor' ),
+		'view_item'          => esc_html__( 'View Connection', 'distributor' ),
+		'search_items'       => esc_html__( 'Search Connections', 'distributor' ),
 		'not_found'          => esc_html__( 'No external connections found.', 'distributor' ),
 		'not_found_in_trash' => esc_html__( 'No external connections found in trash.', 'distributor' ),
 		'parent_item_colon'  => '',
