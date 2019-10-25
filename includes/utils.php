@@ -541,32 +541,33 @@ function set_media( $post_id, $media ) {
 	$settings            = get_settings(); // phpcs:ignore
 	$current_media_posts = get_attached_media( get_allowed_mime_types(), $post_id );
 	$current_media       = [];
+	$original_media_ids  = [];
 
-	$current_attachment_ids_concat = '';
-	foreach ( $current_media_posts as $media_post ) {
-		$current_attachment_ids_concat .= $wpdb->prepare( '%d', $media_post->ID ) . ',';
-	}
+	if( ! empty( $current_media_posts ) ) {
+		$current_attachment_ids_concat = '';
+		foreach ( $current_media_posts as $media_post ) {
+			$current_attachment_ids_concat .= $wpdb->prepare( '%d', $media_post->ID ) . ',';
+		}
 
-	$original_media_meta_data_query = "SELECT 
-										  p1.post_id,
-										  p1.meta_value media_id,
-										  p2.meta_value media_url 
-										FROM
-										  {$wpdb->prefix}postmeta p1 
-										  INNER JOIN {$wpdb->prefix}postmeta p2 
-											ON p1.post_id = p2.post_id 
-											AND p2.meta_key = 'dt_original_media_url' 
-										WHERE p1.meta_key = 'dt_original_media_id' 
-										  AND p1.post_id IN (" . rtrim( $current_attachment_ids_concat, ',' ) . ')';
+		$original_media_meta_data_query = "SELECT 
+											  p1.post_id,
+											  p1.meta_value media_id,
+											  p2.meta_value media_url 
+											FROM
+											  {$wpdb->prefix}postmeta p1 
+											  INNER JOIN {$wpdb->prefix}postmeta p2 
+												ON p1.post_id = p2.post_id 
+												AND p2.meta_key = 'dt_original_media_url' 
+											WHERE p1.meta_key = 'dt_original_media_id' 
+											  AND p1.post_id IN (" . rtrim( $current_attachment_ids_concat, ',' ) . ')';
 
-	$original_media_meta_data = $wpdb->get_results( $original_media_meta_data_query, ARRAY_A );
+		$original_media_meta_data = $wpdb->get_results( $original_media_meta_data_query, ARRAY_A );
 
-	$original_media_ids = [];
-
-	// Create mapping so we don't create duplicates
-	foreach ( $original_media_meta_data as $value ) {
-		$original_media_ids[ $value['media_url'] ] = $value['media_id'];
-		$current_media[ $value['media_url'] ] 	   = $value['post_id'];
+		// Create mapping so we don't create duplicates
+		foreach ( $original_media_meta_data as $value ) {
+			$original_media_ids[ $value['media_url'] ] = $value['media_id'];
+			$current_media[ $value['media_url'] ] 	   = $value['post_id'];
+		}
 	}
 
 	$found_featured_image = false;
@@ -638,20 +639,22 @@ function set_media( $post_id, $media ) {
 	}
 
 	// Deleted media delete on spoke also
-	$deleted_media_ids = [];
-	foreach ( $original_media_ids as $k => $original_media_id ) {
-		if ( ! in_array( $original_media_id, $new_media_original_ids ) ) {
-			$deleted_media_ids[ $k ] = $current_media[ $k ];
+	if( ! empty( $original_media_ids ) ) {
+		$deleted_media_ids = [];
+		foreach ( $original_media_ids as $k => $original_media_id ) {
+			if ( ! in_array( $original_media_id, $new_media_original_ids ) ) {
+				$deleted_media_ids[ $k ] = $current_media[ $k ];
+			}
 		}
-	}
 
-	foreach ( $deleted_media_ids as $k => $deleted_media_id ) {
-		$force_delete = false;
-		$response = @getimagesize( $k );
-		if( false === $response ) {
-			$force_delete = true;
+		foreach ( $deleted_media_ids as $k => $deleted_media_id ) {
+			$force_delete = false;
+			$response = @getimagesize( $k );
+			if( false === $response ) {
+				$force_delete = true;
+			}
+			wp_delete_attachment( $deleted_media_id, $force_delete );
 		}
-		wp_delete_attachment( $deleted_media_id, $force_delete );
 	}
 
 	if ( ! $found_featured_image ) {
