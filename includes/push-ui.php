@@ -46,7 +46,7 @@ function syndicatable() {
 			return false;
 		}
 	} else {
-		if ( ! is_single() ) {
+		if ( ! is_single() && ! is_page() ) {
 			return false;
 		}
 	}
