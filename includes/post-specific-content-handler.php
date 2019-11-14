@@ -38,6 +38,12 @@ function save_post_specific_content( $post, $request ) {
 		$content
 	);
 
+	$content = preg_replace_callback(
+		'|\[gallery([^\]]+)ids="([^"]+)([^\]]+)\]|',
+		__NAMESPACE__ . '\localize_gallery_images_ids',
+		$content
+	);
+
 	// Handle shortcode distribution
 	// We need just to get all shortcodes in post content regardless their type or hierarchy
 	$pattern = '/\[(\[?)([^\]]+)(\]?)\]/';
@@ -66,6 +72,28 @@ function save_post_specific_content( $post, $request ) {
 			'post_content' => $content,
 		)
 	);
+}
+
+/**
+ * Reference distributed post gallery shortcode images to local images
+ *
+ * @param array<string> $matches Matches array
+ *
+ * @return string
+ */
+function localize_gallery_images_ids( $matches ) {
+	$ids           = explode( ',', $matches[2] );
+	$localized_ids = [];
+	update_option( 'dist_test1', var_export( $ids, true ) );
+	foreach ( $ids as $id ) {
+		$localized_ids[] = get_distributed_image_id( (int) $id );
+	}
+
+	$replaced_ids = implode( ',', $localized_ids );
+	$pattern      = '/(ids=")(.*)(")/';
+	$replacement  = '${1}' . $replaced_ids . '$3';
+
+	return preg_replace( $pattern, $replacement, $matches[0] );
 }
 
 /**
