@@ -302,7 +302,7 @@ function send_notifications( $post_id ) {
 		$request = wp_remote_post(
 			untrailingslashit( $target_url ) . '/wp/v2/dt_subscription/receive',
 			[
-				'timeout' => 5,
+				'timeout' => 45,
 				/**
 				 * Filter the arguments sent to the remote server during a subscription update.
 				 *
