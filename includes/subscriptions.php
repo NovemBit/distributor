@@ -247,6 +247,7 @@ function send_notifications( $post_id ) {
 	$post = get_post( $post_id );
 
 	$update_subscriptions = false;
+	$response             = [];
 
 	foreach ( $subscriptions as $subscription_key => $subscription_id ) {
 		$signature      = get_post_meta( $subscription_id, 'dt_subscription_signature', true );
@@ -257,6 +258,9 @@ function send_notifications( $post_id ) {
 			continue;
 		}
 
+		$response[$subscription_key] = [
+			'target_url' => $target_url
+		];
 		$post_body = [
 			'post_id'   => $remote_post_id,
 			'signature' => $signature,
@@ -293,12 +297,20 @@ function send_notifications( $post_id ) {
 				 * @return {array} The request body to send.
 				 */
 				'body'    => apply_filters( 'dt_subscription_post_args', $post_body, $post ),
+				'sslverify' => false
 			]
 		);
 
 		if ( ! is_wp_error( $request ) ) {
 			$response_code = wp_remote_retrieve_response_code( $request );
 			$headers       = wp_remote_retrieve_headers( $request );
+			$body          = wp_remote_retrieve_body( $request );
+			$body_array    = json_decode( $body, true );
+
+			$response[$subscription_key]['response'] = [
+				'code' => $response_code,
+				'body' => $body_array
+			];
 
 			if ( 404 === $response_code && ! empty( $headers['X-Distributor-Post-Deleted'] ) ) {
 				/**
@@ -310,12 +322,16 @@ function send_notifications( $post_id ) {
 
 				wp_delete_post( $subscription_id, true );
 			}
+		} else {
+			$response[$subscription_key]['response'] = $request;
 		}
 	}
 
 	if ( $update_subscriptions ) {
 		update_post_meta( $post_id, 'dt_subscriptions', $subscriptions );
 	}
+
+	return $response;
 }
 
 /**
