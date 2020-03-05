@@ -269,6 +269,11 @@ class SubscriptionsController extends \WP_REST_Controller {
 				}
 			}
 
+			$last_update       = get_post_meta( $post_id, 'dt_subscription_update' );
+			$last_update_meta  = $last_update[0]['meta'];
+			$last_update_terms = $last_update[0]['terms'];
+			$last_update_media = $last_update[0]['media'];
+
 			update_post_meta( $post_id, 'dt_subscription_update', $update );
 
 			$unlinked = (bool) get_post_meta( $post_id, 'dt_unlinked', true );
@@ -293,15 +298,15 @@ class SubscriptionsController extends \WP_REST_Controller {
 			/**
 			 * We check if each of these exist since the API removes empty arrays from requests
 			 */
-			if ( ! empty( $request['post_data']['distributor_meta'] ) ) {
+			if ( ! empty( $request['post_data']['distributor_meta'] ) && $last_update_meta != $update['meta'] ) {
 				\Distributor\Utils\set_meta( $post_id, $request['post_data']['distributor_meta'] );
 			}
 
-			if ( ! empty( $request['post_data']['distributor_terms'] ) ) {
+			if ( ! empty( $request['post_data']['distributor_terms'] ) && $last_update_terms != $update['terms'] ) {
 				\Distributor\Utils\set_taxonomy_terms( $post_id, $request['post_data']['distributor_terms'] );
 			}
 
-			if ( ! empty( $request['post_data']['distributor_media'] ) ) {
+			if ( ! empty( $request['post_data']['distributor_media'] ) && $last_update_media != $update['media'] ) {
 				\Distributor\Utils\set_media( $post_id, $request['post_data']['distributor_media'] );
 			}
 
