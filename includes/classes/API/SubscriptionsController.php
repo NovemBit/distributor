@@ -298,15 +298,15 @@ class SubscriptionsController extends \WP_REST_Controller {
 			/**
 			 * We check if each of these exist since the API removes empty arrays from requests
 			 */
-			if ( ! empty( $request['post_data']['distributor_meta'] ) && $last_update_meta != $update['meta'] ) {
+			if ( ! empty( $request['post_data']['distributor_meta'] ) ) {
 				\Distributor\Utils\set_meta( $post_id, $request['post_data']['distributor_meta'] );
 			}
 
-			if ( ! empty( $request['post_data']['distributor_terms'] ) && $last_update_terms != $update['terms'] ) {
+			if ( ! empty( $request['post_data']['distributor_terms'] ) ) {
 				\Distributor\Utils\set_taxonomy_terms( $post_id, $request['post_data']['distributor_terms'] );
 			}
 
-			if ( ! empty( $request['post_data']['distributor_media'] ) && $last_update_media != $update['media'] ) {
+			if ( ! empty( $request['post_data']['distributor_media'] ) ) {
 				\Distributor\Utils\set_media( $post_id, $request['post_data']['distributor_media'] );
 			}
 
