@@ -312,6 +312,7 @@ function blacklisted_meta() {
 			'_edit_last',
 			'_wp_old_slug',
 			'_wp_old_date',
+			'_thumbnail_id'
 		]
 	);
 }
