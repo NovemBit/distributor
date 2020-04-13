@@ -269,8 +269,12 @@ class SubscriptionsController extends \WP_REST_Controller {
 				}
 			}
 
-			$last_update       = get_post_meta( $post_id, 'dt_subscription_update' );
-			$last_update_terms = $last_update[0]['terms'];
+			$last_update       = get_post_meta( $post_id, 'dt_subscription_update', true );
+			$last_update_terms = [];
+
+			if ( is_array( $last_update ) ) {
+				$last_update_terms = $last_update['terms'];
+			}
 
 			update_post_meta( $post_id, 'dt_subscription_update', $update );
 
