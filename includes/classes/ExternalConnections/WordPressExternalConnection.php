@@ -680,7 +680,7 @@ class WordPressExternalConnection extends ExternalConnection {
 			do_action( 'dt_post_subscription_created', $post_id, $remote_id, $signature, $target_url );
 		}
 
-		return $remote_id;
+		return $response;
 	}
 
 	/**
