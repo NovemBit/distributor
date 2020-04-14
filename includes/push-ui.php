@@ -265,6 +265,8 @@ function push( $params ) {
 			$external_connection_url  = get_post_meta( $connection['id'], 'dt_external_connection_url', true );
 			$external_connection_auth = get_post_meta( $connection['id'], 'dt_external_connection_auth', true );
 
+			$external_push_results[ (int) $connection['id'] ]['target_url'] = $external_connection_url;
+
 			if ( empty( $external_connection_auth ) ) {
 				$external_connection_auth = array();
 			}
@@ -286,31 +288,30 @@ function push( $params ) {
 					$push_args['post_status'] = $params['postStatus'];
 				}
 
-				$remote_id = $external_connection->push( intval( $params['postId'] ), $push_args );
+				$response = $external_connection->push( intval( $params['postId'] ), $push_args );
 
 				/**
 				 * Record the external connection id's remote post id for this local post
 				 */
 
-				if ( ! is_wp_error( $remote_id ) ) {
+				if ( ! is_wp_error( $response ) ) {
+					$body       = wp_remote_retrieve_body( $response );
+					$body_array = json_decode( $body, true );
+					$remote_id  = $body_array['id'];
+
 					$connection_map['external'][ (int) $connection['id'] ] = array(
 						'post_id' => (int) $remote_id,
 						'time'    => time(),
 					);
 
-					$external_push_results[ (int) $connection['id'] ] = array(
-						'post_id' => (int) $remote_id,
-						'date'    => date( 'F j, Y g:i a' ),
-						'status'  => 'success',
-					);
+					$response_code = wp_remote_retrieve_response_code( $response );
+
+					$external_push_results[ (int) $connection['id'] ]['response']['code'] = $response_code;
+					$external_push_results[ (int) $connection['id'] ]['response']['body'] = $body;
 
 					$external_connection->log_sync( array( $remote_id => $params['postId'] ) );
 				} else {
-					$external_push_results[ (int) $connection['id'] ] = array(
-						'post_id' => (int) $remote_id,
-						'date'    => date( 'F j, Y g:i a' ),
-						'status'  => 'fail',
-					);
+					$external_push_results[ (int) $connection['id'] ]['response'] = $response;
 				}
 			}
 		} else {
