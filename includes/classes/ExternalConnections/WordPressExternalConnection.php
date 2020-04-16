@@ -54,7 +54,7 @@ class WordPressExternalConnection extends ExternalConnection {
 	 *
 	 * @var integer
 	 */
-	public static $timeout = 5;
+	public static $timeout = 30;
 
 	/**
 	 * Default post type to pull.
