@@ -143,7 +143,7 @@ function delete_remote_subscription( ExternalConnection $connection, $remote_pos
 		'signature' => $signature,
 	];
 
-	wp_remote_request(
+	$response = wp_remote_request(
 		untrailingslashit( $connection->base_url ) . '/' . $connection::$namespace . '/dt_subscription/delete',
 		array(
 			'timeout'  => 5,
@@ -154,6 +154,8 @@ function delete_remote_subscription( ExternalConnection $connection, $remote_pos
 	);
 
 	delete_post_meta( $post_id, 'dt_subscription_signature' );
+
+	return $response;
 }
 
 /**
@@ -184,6 +186,32 @@ function delete_subscription( $post_id, $signature ) {
 function delete_subscriptions( $post_id ) {
 	if ( ! current_user_can( 'edit_post', $post_id ) ) {
 		return;
+	}
+
+	if ( ! wp_doing_cron() ) {
+
+		$original_source_id = get_post_meta( $post_id, 'dt_original_source_id', true );
+		$original_post_id   = get_post_meta( $post_id, 'dt_original_post_id', true );
+		$subscriptions      = get_post_meta( $post_id, 'dt_subscriptions', true );
+		$params             = [
+			'post_id'            => $post_id,
+			'original_source_id' => $original_source_id,
+			'original_post_id'   => $original_post_id,
+			'subscriptions'      => $subscriptions
+		];
+		$continue = true;
+
+		/**
+		 * Add possibility to delete posts in background
+		 *
+		 * @param bool $continue Whether run 'delete_subscriptions' in background or not
+		 * @param array $params
+		 */
+		$continue = apply_filters( 'dt_allow_delete_subscriptions', $continue, $params );
+
+		if ( false === $continue ) {
+			return;
+		}
 	}
 
 	$original_source_id = get_post_meta( $post_id, 'dt_original_source_id', true );
