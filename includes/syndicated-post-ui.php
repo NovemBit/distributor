@@ -412,6 +412,10 @@ function syndicated_message( $post ) {
 
 	$original_deleted = (bool) get_post_meta( $post->ID, 'dt_original_post_deleted', true );
 
+	if ( $original_deleted ) {
+		return;
+	}
+
 	$unlinked = (bool) get_post_meta( $post->ID, 'dt_unlinked', true );
 
 	$post_type_object = get_post_type_object( $post->post_type );
