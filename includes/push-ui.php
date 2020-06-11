@@ -82,9 +82,10 @@ function get_connections() {
 		wp_send_json_error();
 	}
 
-	$post            = get_post( intval( $_POST['postId'] ) );
-	$connection_map  = (array) get_post_meta( $post->ID, 'dt_connection_map', true );
-	$dom_connections = [];
+	$post                = get_post( intval( $_POST['postId'] ) );
+	$connection_map      = (array) get_post_meta( $post->ID, 'dt_connection_map', true );
+	$connections_pending = (array) get_post_meta( $post->ID, 'dt_connections_pending', true );
+	$dom_connections     = [];
 
 	if ( empty( $connection_map['external'] ) ) {
 		$connection_map['external'] = [];
@@ -177,6 +178,7 @@ function get_connections() {
 				'url'        => $connection->base_url,
 				'name'       => html_entity_decode($connection->name),
 				'syndicated' => ! empty( $connection_map['external'][ (int) $external_connection->ID ] ) ? $connection_map['external'][ (int) $external_connection->ID ] : false,
+				'pending'    => in_array( $connection->id, $connections_pending )
 			];
 		}
 	}
@@ -217,10 +219,19 @@ function ajax_push() {
 		 */
 		$allow_push = apply_filters( 'dt_allow_push', true, $params );
 
+		$external_connections = [];
+		$connections          = $params['connections'];
+
+		foreach ( $connections as $connection ) {
+			$external_connections[$connection['id']] = $connection['id'];
+		}
+
 		if ( false === $allow_push ) {
 			wp_send_json_success(
 				array(
-					'results' => 'Success!!',
+					'results' => array(
+						'external' => $external_connections
+					),
 				)
 			);
 
@@ -484,8 +495,13 @@ function menu_content() {
 						<div class="new-connections-list">
 							<# for ( var key in connections ) { #>
 								<# if ( 'external' === connections[ key ]['type'] ) { #>
-									<div class="add-connection<# if ( ! _.isEmpty( connections[ key ]['syndicated'] ) ) { #> syndicated<# } #>" data-connection-type="external" data-connection-id="{{ connections[ key ]['id'] }}">
-										<span>{{ connections[ key ]['name'] }}</span>
+									<div class="add-connection<# if ( ! _.isEmpty( connections[ key ]['syndicated'] ) || connections[ key ][ 'pending' ] ) { #> syndicated<# } #>" data-connection-type="external" data-connection-id="{{ connections[ key ]['id'] }}">
+										<span>
+											{{ connections[ key ]['name'] }}
+											<# if (connections[ key ][ 'pending' ]) { #>
+												&nbsp;(Pending)
+											<# } #>
+										</span>
 									</div>
 								<# } else { #>
 									<div class="add-connection<# if ( ! _.isEmpty( connections[ key ]['syndicated'] ) ) { #> syndicated<# } #>" data-connection-type="internal" data-connection-id="{{ connections[ key ]['id'] }}">
@@ -553,11 +569,16 @@ function menu_content() {
 		</script>
 
 		<script id="dt-add-connection" type="text/html">
-			<div class="<# if (selectedConnections[connection.type + connection.id]) { #>added<# }#> add-connection <# if (connection.syndicated) { #>syndicated<# } #>" data-connection-type="{{ connection.type }}" data-connection-id="{{ connection.id }}">
+			<div class="<# if (selectedConnections[connection.type + connection.id]) { #>added<# }#> add-connection <# if (connection.syndicated || connection.pending) { #>syndicated<# } #>" data-connection-type="{{ connection.type }}" data-connection-id="{{ connection.id }}">
 				<# if ('internal' === connection.type) { #>
 					<span>{{ connection.url }}</span>
 				<# } else { #>
-					<span>{{{ connection.name }}}</span>
+					<span>
+						{{{ connection.name }}}
+						<# if (connection.pending) { #>
+							&nbsp;(Pending)
+						<# } #>
+					</span>
 				<# } #>
 
 				<# if ('internal' === connection.type && connection.syndicated) { #>
