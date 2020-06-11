@@ -96,6 +96,7 @@ jQuery( window ).on( 'load', () => {
 				error = true;
 			} else {
 				dtConnections['external' + connectionId].syndicated = true;
+				dtConnections['external' + connectionId].pending = true;
 			}
 		} );
 
