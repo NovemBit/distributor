@@ -258,11 +258,21 @@ function delete_subscriptions( $post_id ) {
 /**
  * Send notifications on post update to each subscription for that post
  *
- * @param  int $post_id Post ID.
+ * @param  int|WP_Post $post Post ID or WP_Post, depending on which action the method is hooked to.
  * @since  1.0
  */
-function send_notifications( $post_id ) {
-	if ( ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) || wp_is_post_revision( $post_id ) ) {
+
+function send_notifications( $post ) {
+	$post    = get_post( $post );
+	$post_id = $post->ID;
+
+	if ( ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) || wp_is_post_revision( $post_id ) || ! current_user_can( 'edit_post', $post_id ) ) {
+		return;
+	}
+
+	// If using Gutenberg, short circuit early and run this method later to make sure terms and meta are saved before syndicating.
+	if ( \Distributor\Utils\is_using_gutenberg( $post ) && doing_action( 'save_post' ) && ! isset( $_GET['meta-box-loader'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
+		add_action( "rest_after_insert_{$post->post_type}", __NAMESPACE__ . '\send_notifications' );
 		return;
 	}
 
@@ -320,6 +330,7 @@ function send_notifications( $post_id ) {
 				'distributor_meta'  => \Distributor\Utils\prepare_meta( $post_id ),
 			],
 		];
+
 		if ( \Distributor\Utils\is_using_gutenberg( $post ) ) {
 			if ( \Distributor\Utils\dt_use_block_editor_for_post_type( $post->post_type ) ) {
 				$post_body['post_data']['distributor_raw_content'] = $post->post_content;
@@ -349,9 +360,12 @@ function send_notifications( $post_id ) {
 				 * Filter the arguments sent to the remote server during a subscription update.
 				 *
 				 * @since 1.3.0
+				 * @hook dt_subscription_post_args
 				 *
-				 * @param  array  $post_body The request body to send.
-				 * @param  object $post      The WP_Post that is being pushed.
+				 * @param  {array}   $post_body The request body to send.
+				 * @param  {WP_Post} $post      The WP_Post that is being pushed.
+				 *
+				 * @return {array} The request body to send.
 				 */
 				'body'    => apply_filters( 'dt_subscription_post_args', $post_body, $post ),
 			]
