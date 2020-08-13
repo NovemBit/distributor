@@ -260,8 +260,9 @@ function register_endpoints() {
 		'wp/v2',
 		'/distributor/permissions',
 		array(
-			'methods'  => 'GET',
-			'callback' => __NAMESPACE__ . '\check_permissions',
+			'methods'             => 'GET',
+			'callback'            => __NAMESPACE__ . '\check_permissions',
+			'permission_callback' => '__return_true',
 		)
 	);
 }
